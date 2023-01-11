@@ -7,6 +7,8 @@ import BillsUI from "../views/BillsUI.js";
 import { bills } from "../fixtures/bills.js";
 import { ROUTES_PATH } from "../constants/routes.js";
 import { localStorageMock } from "../__mocks__/localStorage.js";
+// Ajout de l'import from Bills.js de containers
+import Bills from "../containers/Bills.js";
 
 import router from "../app/Router.js";
 
