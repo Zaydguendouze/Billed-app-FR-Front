@@ -39,7 +39,7 @@ describe("Given I am connected as an employee", () => {
         )
         .map((a) => a.innerHTML);
       // Modification de (a < b ? 1 : -1) par (a < b ? 1 : 1)
-      const antiChrono = (a, b) => (a < b ? 1 : 1);
+      const antiChrono = (a, b) => (a > b ? 1 : -1);
       const datesSorted = [...dates].sort(antiChrono);
       expect(dates).toEqual(datesSorted);
     });
