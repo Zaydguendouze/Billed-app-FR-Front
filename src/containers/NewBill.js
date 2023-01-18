@@ -28,21 +28,29 @@ export default class NewBill {
     formData.append("file", file);
     formData.append("email", email);
 
-    this.store
-      .bills()
-      .create({
-        data: formData,
-        headers: {
-          noContentType: true,
-        },
-      })
-      .then(({ fileUrl, key }) => {
-        console.log(fileUrl);
-        this.billId = key;
-        this.fileUrl = fileUrl;
-        this.fileName = fileName;
-      })
-      .catch((error) => console.error(error));
+    // Création d'un regexp pour vérifier l'extension du fichier lors de la création d'une nouvelle facture
+    // Si le champs de saisi n'est pas valide il est réinistialisé à vide et une alerte est crée
+    const regexImgAccepted = new RegExp(/\.(jpe?g|png)$/i);
+    if (!regexImgAccepted.test(file.name)) {
+      this.document.querySelector(`input[data-testid="file"]`).value = "";
+      alert("Veuillez ajouter un document au format png ou jpeg");
+    } else {
+      this.store
+        .bills()
+        .create({
+          data: formData,
+          headers: {
+            noContentType: true,
+          },
+        })
+        .then(({ fileUrl, key }) => {
+          console.log(fileUrl);
+          this.billId = key;
+          this.fileUrl = fileUrl;
+          this.fileName = fileName;
+        })
+        .catch((error) => console.error(error));
+    }
   };
   handleSubmit = (e) => {
     e.preventDefault();
