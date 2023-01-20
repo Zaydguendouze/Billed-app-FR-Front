@@ -95,17 +95,23 @@ export default class {
   };
 
   handleEditTicket(e, bill, bills) {
+    console.log("this.counter", this.counter);
+    console.log("this.id", this.id);
+    console.log("bill.id", bill.id);
     if (this.counter === undefined || this.id !== bill.id) this.counter = 0;
     if (this.id === undefined || this.id !== bill.id) this.id = bill.id;
     if (this.counter % 2 === 0) {
+      console.log("if", bill);
       bills.forEach((b) => {
         $(`#open-bill${b.id}`).css({ background: "#0D5AE5" });
       });
       $(`#open-bill${bill.id}`).css({ background: "#2A2B35" });
+      // Injection à droite de la fonction DashboardFormUI
       $(".dashboard-right-container div").html(DashboardFormUI(bill));
       $(".vertical-navbar").css({ height: "150vh" });
       this.counter++;
     } else {
+      console.log("else", bill);
       $(`#open-bill${bill.id}`).css({ background: "#0D5AE5" });
 
       $(".dashboard-right-container div").html(`
@@ -117,6 +123,9 @@ export default class {
     $("#icon-eye-d").click(this.handleClickIconEye);
     $("#btn-accept-bill").click((e) => this.handleAcceptSubmit(e, bill));
     $("#btn-refuse-bill").click((e) => this.handleRefuseSubmit(e, bill));
+    console.log("this.counter-aprés", this.counter);
+    console.log("this.id-aprés", this.id);
+    console.log("bill.id-aprés", bill.id);
   }
 
   handleAcceptSubmit = (e, bill) => {
