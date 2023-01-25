@@ -30,6 +30,9 @@ describe("Given I am connected as an employee", () => {
       await waitFor(() => screen.getByTestId("icon-window"));
       const windowIcon = screen.getByTestId("icon-window");
       //to-do write expect expression
+      // expect permet d'executer la fonction et de stocker la valeur de retour de cette dernière
+      // On veut que l'icone devient selon le css active-icon
+      expect(windowIcon.className).toBe("active-icon");
     });
     test("Then bills should be ordered from earliest to latest", () => {
       document.body.innerHTML = BillsUI({ data: bills });
