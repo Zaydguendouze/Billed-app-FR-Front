@@ -1,6 +1,8 @@
 /**
  * @jest-environment jsdom
  */
+// A verifier!!!!
+import "@testing-library/jest-dom/extend-expect";
 
 import { screen, waitFor } from "@testing-library/dom";
 import BillsUI from "../views/BillsUI.js";
@@ -31,7 +33,7 @@ describe("Given I am connected as an employee", () => {
       const windowIcon = screen.getByTestId("icon-window");
       //to-do write expect expression
       // expect permet d'executer la fonction et de stocker la valeur de retour de cette dernière
-      // On veut que l'icone devient selon le css active-icon
+      // On veut que l'icone devient selon le css active-icon ou (highlighted)
       expect(windowIcon.className).toBe("active-icon");
     });
     test("Then bills should be ordered from earliest to latest", () => {
