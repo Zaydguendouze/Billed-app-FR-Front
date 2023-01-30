@@ -4,7 +4,11 @@
 // A verifier!!!!
 import "@testing-library/jest-dom/extend-expect";
 
-import { screen, waitFor } from "@testing-library/dom";
+import "@testing-library/jest-dom";
+
+import userEvent from "@testing-library/user-event";
+
+import { screen, waitFor, getAllByTestId } from "@testing-library/dom";
 import BillsUI from "../views/BillsUI.js";
 import { bills } from "../fixtures/bills.js";
 import { ROUTES_PATH } from "../constants/routes.js";
@@ -48,5 +52,9 @@ describe("Given I am connected as an employee", () => {
       const datesSorted = [...dates].sort(antiChrono);
       expect(dates).toEqual(datesSorted);
     });
+
+    // Tests unitaires
+
+    describe();
   });
 });
