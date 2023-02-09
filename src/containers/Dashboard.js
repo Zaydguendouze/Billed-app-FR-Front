@@ -99,6 +99,8 @@ export default class {
     console.log("this.id", this.id);
     console.log("bill.id", bill.id);
 
+    $(`#open-bill${bill.id}`).attr("hasEvent", "true");
+
     if (this.counter === undefined || this.id !== bill.id) this.counter = 0;
     if (this.id === undefined || this.id !== bill.id) this.id = bill.id;
 
@@ -219,10 +221,16 @@ export default class {
     // });
 
     bills.forEach((bill) => {
+      console.log("test_forEach");
       $(`#open-bill${bill.id}`)
         .off("click")
         .on("click", (e) => this.handleEditTicket(e, bill, bills));
+
+      $(`#open-bill${bill.id}`).attr("hasEvent", "true");
     });
+
+    //   .attr("hasEvent", "true");
+    // console.log("attrAdd");
 
     // bills.forEach((bill) => {
     //   $(`#open-bill${bill.id}`).click((e) =>
