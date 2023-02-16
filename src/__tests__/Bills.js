@@ -10,14 +10,19 @@ import "@testing-library/jest-dom";
 // complétion de formulaire et clics de souris etc...
 import userEvent from "@testing-library/user-event";
 
-import { screen, waitFor, getAllByTestId } from "@testing-library/dom";
+import { screen, waitFor, getByTestId } from "@testing-library/dom";
 import BillsUI from "../views/BillsUI.js";
 import { bills } from "../fixtures/bills.js";
-import { ROUTES_PATH } from "../constants/routes.js";
+import { ROUTES_PATH, ROUTES } from "../constants/routes.js";
 import { localStorageMock } from "../__mocks__/localStorage.js";
 
+// mock
+import mockStore from "../__mocks__/store";
+
 import router from "../app/Router.js";
-//
+// jest.mock
+jest.mock("../app/store", () => mockStore);
+
 import Bills from "../containers/Bills.js";
 
 describe("Given I am connected as an employee", () => {
@@ -59,58 +64,66 @@ describe("Given I am connected as an employee", () => {
 
     // Tests unitaires
 
-    test("When i navigate on new bill", () => {
-      const bills = new Bills({
-        document,
-        onNavigate: window.onNavigate,
-        store: null,
-        localStorage: window.localStorage,
+    describe("When i navigate on new bill", () => {
+      test("When i click on Nouvelle note de frais", () => {
+        const onNavigate = (pathname) => {
+          document.body.innerHTML = ROUTES({ pathname });
+        };
+
+        // Object.defineProperty(window, "localStorage", {
+        //   value: localStorageMock,
+        // });
+        // window.localStorage.setItem(
+        //   "user",
+        //   JSON.stringify({
+        //     type: "Employee",
+        //   })
+        // );
+
+        const bills = new Bills({
+          document,
+          onNavigate,
+          // mockStore??
+          store: null,
+          localStorage: window.localStorage,
+        });
+
+        const handleClickNewBill = jest.fn(() => bills.handleClickNewBill());
+
+        const buttonNewBill = screen.getByTestId("btn-new-bill");
+
+        buttonNewBill.addEventListener("click", handleClickNewBill);
+
+        userEvent.click(buttonNewBill);
+
+        expect(handleClickNewBill).toHaveBeenCalled();
       });
 
-      buttonNewBill.addEventListener("click", bills.handleClickNewBill);
+      test("When i click on icon eye", () => {
+        const onNavigate = (pathname) => {
+          document.body.innerHTML = ROUTES({ pathname });
+        };
+
+        const billsTwo = new Bills({
+          document,
+          onNavigate,
+          // question
+          store: mockStore,
+          localStorage: window.localStorage,
+        });
+
+        const handleClickIconEye = jest.fn((e) =>
+          billsTwo.handleClickIconEye(e)
+        );
+
+        // getAllByTestId?? forEach...
+        const billsTwo = screen.getByTestId("icon-eye");
+
+        billsTwo.forEach((e) => {
+          e.addEventListener("click", handleClickIconEye(e));
+          userEvent.click(e);
+        });
+      });
     });
-
-    // describe("ButtonNewBill", () => {
-    //   let component;
-    //   // execution avant chaque test
-    //   beforeEach(() => {
-    //     component = new Bills({
-    //       document,
-    //       onNavigate: jest.fn(),
-    //       store: null,
-    //       localStorage: window.localStorage,
-    //     });
-    //   });
-
-    //   it("Should call the onNavigate function when buttonNewBill is clicked", () => {
-    //     component.buttonNewBill.dispatchEvent(new Event("click"));
-    //     expect(component.onNavigate).toHaveBeenCalledWith(
-    //       ROUTES_PATH["NewBill"]
-    //     );
-    //   });
-    // });
-
-    // describe("IconEye", () => {
-    //   let component;
-    //   beforeEach(() => {
-    //     component = new Bills({
-    //       document,
-    //       onNavigate: jest.fn(),
-    //       store: null,
-    //       localStorage: window.localStorage,
-    //     });
-    //     });
-    //   });
-
-    //   it("Should set the billUrl and imgWidth attributes when the iconEye is clicked", () => {
-    //     component.iconEye[0].dispatchEvent(new Event("click"));
-    //     expect($(".bill-proof-container img").attr("src")).toEqual(
-    //       component.iconEye[0].getAttribute("data-bill-url")
-    //     );
-    //     expect($(".bill-proof-container img").attr("width")).toEqual(
-    //       Math.floor($("#modaleFile").width() * 0.5)
-    //     );
-    //   });
-    // });
   });
 });
