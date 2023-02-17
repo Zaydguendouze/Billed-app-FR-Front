@@ -52,7 +52,7 @@ export default class {
               // if for some reason, corrupted data was introduced, we manage here failing formatDate function
               // log the error and return unformatted date in that case
 
-              console.log(e, "for", doc);
+              // console.log(e, "for", doc);
               return {
                 ...doc,
                 // Ajout de la fonction formDate
@@ -61,7 +61,7 @@ export default class {
               };
             }
           });
-          console.log("length", bills.length);
+          // console.log("length", bills.length);
           return bills;
         });
     }
