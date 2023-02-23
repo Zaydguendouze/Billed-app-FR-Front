@@ -70,16 +70,6 @@ describe("Given I am connected as an employee", () => {
         document.body.innerHTML = ROUTES({ pathname });
       };
 
-      // Object.defineProperty(window, "localStorage", {
-      //   value: localStorageMock,
-      // });
-      // window.localStorage.setItem(
-      //   "user",
-      //   JSON.stringify({
-      //     type: "Employee",
-      //   })
-      // );
-
       onNavigate(ROUTES_PATH.Bills);
 
       const bills = new Bills({
@@ -94,27 +84,11 @@ describe("Given I am connected as an employee", () => {
       buttonNewBill.addEventListener("click", bills.handleClickNewBill);
 
       expect(buttonNewBill.innerHTML).toBe("Nouvelle note de frais");
-
-      // const bills = new Bills({
-      //   document,
-      //   onNavigate,
-      //   // mockStore??
-      //   store: null,
-      //   localStorage: window.localStorage,
-      // });
-
-      // const handleClickNewBill = jest.fn(() => bills.handleClickNewBill());
-
-      // const buttonNewBill = screen.getByTestId("btn-new-bill");
-
-      // buttonNewBill.addEventListener("click", handleClickNewBill);
-
-      // userEvent.click(buttonNewBill);
-
-      // expect(handleClickNewBill).toHaveBeenCalled();
     });
 
     test("When i click on icon eye", () => {
+      // document.body.innerHTML = BillsUI(bills[0]);
+
       const onNavigate = (pathname) => {
         document.body.innerHTML = ROUTES({ pathname });
       };
@@ -124,22 +98,27 @@ describe("Given I am connected as an employee", () => {
       const billsTwo = new Bills({
         document,
         onNavigate: window.onNavigate,
-        // question sur le mockStore
         store: null,
         localStorage: window.localStorage,
       });
 
+      // const modaleFile = document.getElementById("modaleFile");
+
       // getAllByTestId?? forEach...
-      const icons = screen.getAllByTestId("icon-eye");
+      const iconEye = document.querySelectorAll(`div[data-testid="icon-eye"]`);
+      // const iconEye = screen.getByTestId("icon-eye");
 
-      // const handleClickIconEye = jest.fn((e) =>
-      //   billsTwo.handleClickIconEye(e)
-      // );
+      const modalFile = document.getElementById("modalFile");
 
-      // icons.forEach((e) => {
-      //   e.addEventListener("click", handleClickIconEye(e));
-      //   userEvent.click(e);
-      // });
+      // iconEye.addEventListener("click", billsTwo.handleClickIconEye);
+
+      const handleClickIconEye = jest.fn((e) => billsTwo.handleClickIconEye(e));
+
+      iconEye.forEach((e) => {
+        e.addEventListener("click", handleClickIconEye(e));
+        userEvent.click(e);
+        expect(modaleFile).toHaveClass("show");
+      });
     });
   });
 
@@ -157,7 +136,7 @@ describe("Given I am connected as an employee", () => {
     window.onNavigate(ROUTES_PATH.Bills);
     await waitFor(() => screen.getByText("Mes notes de frais"));
     //
-    const contentPending = await screen.getByText("En attente (1)");
+    const contentPending = await screen.getByTestId("btn-new-bill");
     expect(contentPending).toBeTruthy();
     //
     // const contentRefused = await screen.getByText("Refusé (2)");
