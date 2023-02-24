@@ -93,7 +93,7 @@ describe("Given I am connected as an employee", () => {
         document.body.innerHTML = ROUTES({ pathname });
       };
 
-      onNavigate(ROUTES_PATH.Bills);
+      onNavigate(ROUTES_PATH.NewBill);
 
       const billsTwo = new Bills({
         document,
@@ -106,18 +106,17 @@ describe("Given I am connected as an employee", () => {
 
       // getAllByTestId?? forEach...
       const iconEye = document.querySelectorAll(`div[data-testid="icon-eye"]`);
-      // const iconEye = screen.getByTestId("icon-eye");
-
-      const modalFile = document.getElementById("modalFile");
+      // const iconEye = screen.getAllByTestId("icon-eye");
 
       // iconEye.addEventListener("click", billsTwo.handleClickIconEye);
 
-      const handleClickIconEye = jest.fn((e) => billsTwo.handleClickIconEye(e));
+      // const handleClickIconEye = jest.fn((e) => billsTwo.handleClickIconEye(e));
 
-      iconEye.forEach((e) => {
-        e.addEventListener("click", handleClickIconEye(e));
-        userEvent.click(e);
-        expect(modaleFile).toHaveClass("show");
+      iconEye.forEach((icon) => {
+        icon.addEventListener("click", () => billsTwo.handleClickIconEye(icon));
+        userEvent.click(icon);
+        const modal = document.getElementById("modalFile");
+        expect(modal).toHaveClass("show");
       });
     });
   });
